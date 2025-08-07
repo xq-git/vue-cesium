@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "baseUrl": ".",
+    "paths": {      //导入路径相关ts警告
+      "@/*": ["src/*"],  //虽然 Vite 在运行时能够正确解析 @ 别名（因为已在 vite.config.ts 中配置），但 TypeScript 在静态类型检查时可能无法识别这个别名。
+      "vue-router": ["./node_modules/vue-router"]
+    },
+    "moduleResolution": "node",
+    "allowJs": true,
+    "jsx": "preserve",
+    "types": ["vite/client", "@vue/runtime-core"],
+    "isolatedModules": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+} 

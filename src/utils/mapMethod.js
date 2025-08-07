@@ -1,17 +1,9 @@
-/*
- * @Author: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @Date: 2024-03-28 16:34:38
- * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime: 2024-04-17 09:46:58
- * @FilePath: \vue-cesium\src\utils\mapMethod.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 // import * as Cesium from "Cesium";
 
 class Map {
   constructor(el, geoJson) {
     this.el = el;
-    this.geoJson = geoJson;
+    this.geoJson = geoJson || null;
     this.dataSource = null;
     this.viewer = null;
   }
@@ -38,16 +30,16 @@ class Map {
       // requestRenderMode: true, //启用请求渲染模式
       scene3DOnly: true, //每个几何实例将只能以3D渲染以节省GPU内存
       sceneMode: 3, //初始场景模式 1 2D模式 2 2D循环模式 3 3D模式  Cesium.SceneMode
-      //   imageryProvider: new Cesium.WebMapTileServiceImageryProvider({
-      //     url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=b6b320a7ccfabfdc30536330efc07f3e",
-      //     layer: "img",
-      //     style: "default",
-      //     tileMatrixSetID: "w",
-      //     format: "tiles",
-      //     maximumLevel: 18,
-      //   }),
+        imageryProvider: new Cesium.WebMapTileServiceImageryProvider({
+          url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=b6b320a7ccfabfdc30536330efc07f3e",
+          layer: "img",
+          style: "default",
+          tileMatrixSetID: "w",
+          format: "tiles",
+          maximumLevel: 18,
+        }),
       // imageryProvider: new Cesium.UrlTemplateImageryProvider({
-      //   // enablePickFeatures: false,
+      //   enablePickFeatures: false,
       //   // url: "http://117.139.13.157:47786/gisserver/rest/services/mapserver/tdt-image/{z}/{x}/{y}",
       //   // url: 'http://117.139.13.157:47786/gisserver/rest/services/mapserver/tdt-road/{z}/{x}/{y}',
       //   // url: 'http://117.139.13.157:47786/gisserver/rest/services/mapserver/tdt-image/{z}/{x}/{y}?style=Gray',
@@ -58,9 +50,9 @@ class Map {
       //   maximumLevel: 18,
       // }),
 
-      terrainProvider: new Cesium.CesiumTerrainProvider({
-        url: "http://117.139.13.157:37880/demo/terrain/kFJYVGiT",
-      }),
+      // terrainProvider: new Cesium.CesiumTerrainProvider({
+      //   url: "http://117.139.13.157:37880/demo/terrain/kFJYVGiT",
+      // }),
     });
 
     // viewer.dataSources.add(viewer.data);
@@ -116,10 +108,21 @@ class Map {
     var tileset = this.viewer.scene.primitives.add(
       new Cesium.Cesium3DTileset({
         url,
+        maximumScreenSpaceError: 2,    // 降低此值以提高清晰度，防止消失
+        maximumMemoryUsage: 2048,      // 增加内存限制
+        cullWithChildrenBounds: true,
+        skipLevelOfDetail: false,       // 确保加载所有层级的细节
+        preferLeaves: false,            // 不要跳过中间层级
+        loadSiblings: true,             // 加载兄弟节点以提供更好的过渡
       })
     );
     tileset.readyPromise.then(() => {
+      this.viewer.scene.globe.depthTestAgainstTerrain = false;
+      // 开启深度测试
       this.viewer.scene.globe.depthTestAgainstTerrain = true;
+      this.viewer.scene.globe.depthTestAgainstTerrain = true;
+      // 锁定地形
+      // this.viewer.scene.globe.enableLighting = true;
 
       // 获取tileset的中心点坐标
       var boundingSphere = tileset.boundingSphere;
@@ -166,6 +169,27 @@ class Map {
       });
     });
   }
+  rotate(){
+    //每次旋转的弧度
+    var angle = Cesium.Math.toRadians(Math.PI*0.15)
+    var _ratote = ()=>{
+      console.log(1)
+    // 每一帧渲染时，相机会绕 z 轴（Cesium.Cartesian3.UNIT_Z）旋转angle 弧度。
+      this.viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z,angle);
+    }
+    
+    //Cesium 中的时钟（viewer.clock）的 onTick 事件的监听器。该事件会在每一帧渲染时触发。
+    this.viewer.clock.onTick.addEventListener(_ratote);
+    setTimeout(()=>{
+      this.viewer.clock.onTick.removeEventListener(_ratote);
+    },3000)
+  }
 }
+// debugger
+// const map = require('./geoJson.js')
+// map.init(Map)
+
+
+
 
 export default Map;
