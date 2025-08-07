@@ -7,3 +7,20 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 - [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
 
 此项目地形有云南省地形数据，可以用于绘制云南省的地图。
+
+
+## eslint校验
+1增加vite.config.ts配置
+    eslintPlugin({
+      include: [
+        'src/**/*.js',
+        'src/**/*.ts',
+        'src/**/*.vue',
+        'src/**/*.jsx',
+        'src/**/*.tsx',
+      ],
+      exclude: ['node_modules/**', 'dist/**'],
+    }),
+
+2增加eslint.config.mjs  校验规则
+3增加tsconfig.app.json  

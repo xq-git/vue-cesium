@@ -4,13 +4,13 @@ import { ref, onMounted } from 'vue'
 const cesiumDom = ref(null)
 
 onMounted(() => {
-    const map = new Map(cesiumDom.value, {})
-    map.init()
-    map.rotate()
+  const map = new Map(cesiumDom.value, {})
+  map.init()
+  map.rotate()
 })
 </script>
 
 <template>
-    <div class="w-[full] h-[full]" ref="cesiumDom"></div>
+  <div class="w-[full] h-[full]" ref="cesiumDom"></div>
 </template>
 

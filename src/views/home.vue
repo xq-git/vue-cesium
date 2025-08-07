@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { menu } from "@/constant/menu";
+import { useRouter } from 'vue-router'
+import { menu } from '@/constant/menu'
 
-const router = useRouter();
+const router = useRouter()
 
-console.log(router, "router");
+console.log(router, 'router')
 
 function handleCustomShader(item: typeof menu[0]) {
   router.push({
     name: item.routeName,
-  });
+  })
 }
 
 function getBackgroundStyle(item: typeof menu[0]) {
-  return new URL(`${item.img}`, import.meta.url).href;
+  return new URL(`${item.img}`, import.meta.url).href
 }
 </script>
 <template>
@@ -28,11 +28,10 @@ function getBackgroundStyle(item: typeof menu[0]) {
             absolute text h-[40px] w-[inherit] leading-[40px] bg-[rgba(37,37,42,0.6)] text-center text-[13px] bottom-[0] tracking-[2px]
             font-[cursive]
             group-hover:bg-[rgba(54,99,236,0.8)] group-hover:font-bold"
-          
         >
           {{ item.name }}
         </h5>
-            <img :src="getBackgroundStyle(item)" alt="" />
+        <img :src="getBackgroundStyle(item)" alt="" />
       </div>
     </div>
   </div>

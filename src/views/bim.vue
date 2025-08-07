@@ -5,11 +5,11 @@ console.log(viewer, 'window.viewer.value')
 window.viewer = viewer
 console.log(window.viewer, 'window.viewer.value')
 
-   //重点，必须设置该配置
-   window.viewer.value.scene.globe.depthTestAgainstTerrain = true;
-        window.viewer.value.clock.multiplier = 20000;
-        window.viewer.value.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-        window.viewer.value.scene.postUpdate.addEventListener(start);
+//重点，必须设置该配置
+window.viewer.value.scene.globe.depthTestAgainstTerrain = true
+window.viewer.value.clock.multiplier = 20000
+window.viewer.value.camera.lookAtTransform(Cesium.Matrix4.IDENTITY)
+window.viewer.value.scene.postUpdate.addEventListener(start)
 //         //转一圈半自动停止
 //         var t = setTimeout(stop, 5500000);
 
@@ -42,8 +42,8 @@ console.log(window.viewer, 'window.viewer.value')
 //       }
 </script>
 <template>
-<div id="bimmap" ref="bimmap" style="width: 100%; height: 100%">
-</div>
+  <div id="bimmap" ref="bimmap" style="width: 100%; height: 100%">
+  </div>
 </template>
 <style lang='less' scoped>
 </style>

@@ -2,17 +2,17 @@
 
 class Map {
   constructor(el, geoJson) {
-    this.el = el;
-    this.geoJson = geoJson || null;
-    this.dataSource = null;
-    this.viewer = null;
+    this.el = el
+    this.geoJson = geoJson || null
+    this.dataSource = null
+    this.viewer = null
   }
   init() {
     Cesium.Ion.defaultAccessToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZGRiYThlYy0wYTI5LTRhMzUtOTNmOC02NjlhMjFhZTc0ZjUiLCJpZCI6MTg3Njg0LCJpYXQiOjE3MDQyOTAxNjN9.9Ljp1M_zBOEU3_8wy5gEJpFW5vzQp-uFSc59UPeim4Y";
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZGRiYThlYy0wYTI5LTRhMzUtOTNmOC02NjlhMjFhZTc0ZjUiLCJpZCI6MTg3Njg0LCJpYXQiOjE3MDQyOTAxNjN9.9Ljp1M_zBOEU3_8wy5gEJpFW5vzQp-uFSc59UPeim4Y'
     const imageryProvider = new Cesium.ArcGisMapServerImageryProvider({
-      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-    });
+      url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+    })
     this.viewer = new Cesium.Viewer(this.el, {
       baseLayerPicker: false,
       geocoder: false, //是否显示地名查找控件
@@ -30,14 +30,14 @@ class Map {
       // requestRenderMode: true, //启用请求渲染模式
       scene3DOnly: true, //每个几何实例将只能以3D渲染以节省GPU内存
       sceneMode: 3, //初始场景模式 1 2D模式 2 2D循环模式 3 3D模式  Cesium.SceneMode
-        imageryProvider: new Cesium.WebMapTileServiceImageryProvider({
-          url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=b6b320a7ccfabfdc30536330efc07f3e",
-          layer: "img",
-          style: "default",
-          tileMatrixSetID: "w",
-          format: "tiles",
-          maximumLevel: 18,
-        }),
+      imageryProvider: new Cesium.WebMapTileServiceImageryProvider({
+        url: 'http://t0.tianditu.gov.cn/img_w/wmts?tk=b6b320a7ccfabfdc30536330efc07f3e',
+        layer: 'img',
+        style: 'default',
+        tileMatrixSetID: 'w',
+        format: 'tiles',
+        maximumLevel: 18,
+      }),
       // imageryProvider: new Cesium.UrlTemplateImageryProvider({
       //   enablePickFeatures: false,
       //   // url: "http://117.139.13.157:47786/gisserver/rest/services/mapserver/tdt-image/{z}/{x}/{y}",
@@ -53,22 +53,22 @@ class Map {
       // terrainProvider: new Cesium.CesiumTerrainProvider({
       //   url: "http://117.139.13.157:37880/demo/terrain/kFJYVGiT",
       // }),
-    });
+    })
 
     // viewer.dataSources.add(viewer.data);
   }
 
   highLightArea() {
     new Cesium.GeoJsonDataSource().load(this.geoJson).then((res) => {
-      const entities = new Cesium.GeoJsonDataSource().entities;
-      debugger;
-    });
+      const entities = new Cesium.GeoJsonDataSource().entities
+      debugger
+    })
   }
 
   flyTo(lon, lat, height) {
     this.viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(lon, lat, height),
-    });
+    })
   }
 
   addLightSpotMaterial(lon, lat, height) {
@@ -101,45 +101,45 @@ class Map {
           isTranslucent: true,
         }),
       },
-    });
+    })
   }
 
   add3dTiles(url) {
-    var tileset = this.viewer.scene.primitives.add(
+    let tileset = this.viewer.scene.primitives.add(
       new Cesium.Cesium3DTileset({
         url,
-        maximumScreenSpaceError: 2,    // 降低此值以提高清晰度，防止消失
-        maximumMemoryUsage: 2048,      // 增加内存限制
+        maximumScreenSpaceError: 2, // 降低此值以提高清晰度，防止消失
+        maximumMemoryUsage: 2048, // 增加内存限制
         cullWithChildrenBounds: true,
-        skipLevelOfDetail: false,       // 确保加载所有层级的细节
-        preferLeaves: false,            // 不要跳过中间层级
-        loadSiblings: true,             // 加载兄弟节点以提供更好的过渡
+        skipLevelOfDetail: false, // 确保加载所有层级的细节
+        preferLeaves: false, // 不要跳过中间层级
+        loadSiblings: true, // 加载兄弟节点以提供更好的过渡
       })
-    );
+    )
     tileset.readyPromise.then(() => {
-      this.viewer.scene.globe.depthTestAgainstTerrain = false;
+      this.viewer.scene.globe.depthTestAgainstTerrain = false
       // 开启深度测试
-      this.viewer.scene.globe.depthTestAgainstTerrain = true;
-      this.viewer.scene.globe.depthTestAgainstTerrain = true;
+      this.viewer.scene.globe.depthTestAgainstTerrain = true
+      this.viewer.scene.globe.depthTestAgainstTerrain = true
       // 锁定地形
       // this.viewer.scene.globe.enableLighting = true;
 
       // 获取tileset的中心点坐标
-      var boundingSphere = tileset.boundingSphere;
-      var center = boundingSphere.center;
+      let boundingSphere = tileset.boundingSphere
+      let center = boundingSphere.center
 
       // 将中心点转换为wgs84坐标系下的经纬度
-      var cartographic = Cesium.Cartographic.fromCartesian(center);
-      var lon = Cesium.Math.toDegrees(cartographic.longitude);
-      var lat = Cesium.Math.toDegrees(cartographic.latitude);
-      var height = Cesium.Math.toDegrees(cartographic.height);
+      let cartographic = Cesium.Cartographic.fromCartesian(center)
+      let lon = Cesium.Math.toDegrees(cartographic.longitude)
+      let lat = Cesium.Math.toDegrees(cartographic.latitude)
+      let height = Cesium.Math.toDegrees(cartographic.height)
       this.viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(lon, lat, height),
-      });
+      })
 
       /**
-       * 
-     
+       *
+
       // 将经纬度调整为北京的经纬度
       var beijingLongitude = 116.4074;
       var beijingLatitude = 39.9042;
@@ -163,25 +163,25 @@ class Map {
       this.viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(lon, lat, 100),
         label: {
-          text: "丽江文广大楼",
-          font: "20px sans-serif",
+          text: '丽江文广大楼',
+          font: '20px sans-serif',
         },
-      });
-    });
+      })
+    })
   }
-  rotate(){
+  rotate() {
     //每次旋转的弧度
-    var angle = Cesium.Math.toRadians(Math.PI*0.15)
-    var _ratote = ()=>{
+    let angle = Cesium.Math.toRadians(Math.PI * 0.15)
+    let _ratote = () => {
       console.log(1)
-    // 每一帧渲染时，相机会绕 z 轴（Cesium.Cartesian3.UNIT_Z）旋转angle 弧度。
-      this.viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z,angle);
+      // 每一帧渲染时，相机会绕 z 轴（Cesium.Cartesian3.UNIT_Z）旋转angle 弧度。
+      this.viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z,angle)
     }
-    
+
     //Cesium 中的时钟（viewer.clock）的 onTick 事件的监听器。该事件会在每一帧渲染时触发。
-    this.viewer.clock.onTick.addEventListener(_ratote);
-    setTimeout(()=>{
-      this.viewer.clock.onTick.removeEventListener(_ratote);
+    this.viewer.clock.onTick.addEventListener(_ratote)
+    setTimeout(() => {
+      this.viewer.clock.onTick.removeEventListener(_ratote)
     },3000)
   }
 }
@@ -190,6 +190,4 @@ class Map {
 // map.init(Map)
 
 
-
-
-export default Map;
+export default Map
